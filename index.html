@@ -44,15 +44,26 @@
         .modal-content {
             transition: transform 0.3s ease;
         }
+        /* Stili per il selettore di lingua */
+        .lang-btn.active {
+            font-weight: bold;
+            color: #4f46e5; /* Indigo */
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center min-h-screen p-4">
 
     <div class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 space-y-6">
         <!-- Intestazione -->
-        <div class="text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Convertitore di File</h1>
-            <p class="text-slate-500 mt-2">Converte file .txt e .docx in PDF, DOCX, TXT, PNG e JPG.</p>
+        <div class="text-center relative">
+            <div class="absolute top-0 right-0 text-sm">
+                <button id="lang-it" class="lang-btn p-1" data-lang="it">IT</button>
+                <span>/</span>
+                <button id="lang-en" class="lang-btn p-1" data-lang="en">EN</button>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800" data-lang-key="title">Convertitore di File</h1>
+            <p class="text-slate-500 mt-2" data-lang-key="subtitle">Converte file .txt e .docx in PDF, DOCX, TXT, PNG e JPG.</p>
         </div>
 
         <!-- Area di caricamento file -->
@@ -60,9 +71,9 @@
             <label for="file-input" class="file-drop-area relative block w-full rounded-lg border-2 border-dashed border-slate-300 p-12 text-center hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                 <div class="flex flex-col items-center justify-center space-y-2">
                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
-                    <span class="block font-medium text-slate-600">Trascina un file qui</span>
-                    <span class="text-slate-500 text-sm">o</span>
-                    <span class="relative bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-indigo-700">
+                    <span class="block font-medium text-slate-600" data-lang-key="dragFile">Trascina un file qui</span>
+                    <span class="text-slate-500 text-sm" data-lang-key="or">o</span>
+                    <span class="relative bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-indigo-700" data-lang-key="chooseFile">
                         Scegli un file
                     </span>
                 </div>
@@ -74,7 +85,7 @@
         <!-- Opzioni di conversione -->
         <div id="options-area" class="hidden space-y-4 md:space-y-0 md:flex md:items-center md:justify-around md:space-x-4">
             <div class="flex-1">
-                <label for="to-format" class="block text-sm font-medium text-slate-700 mb-1">Converti in:</label>
+                <label for="to-format" class="block text-sm font-medium text-slate-700 mb-1" data-lang-key="convertTo">Converti in:</label>
                 <select id="to-format" class="w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     <option value="pdf">PDF (.pdf)</option>
                     <option value="docx">Word (.docx)</option>
@@ -85,7 +96,7 @@
             </div>
             <button id="convert-btn" class="w-full md:w-auto bg-indigo-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2 md:mt-6">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.17 13.17-2.34-2.34a2 2 0 0 0-2.83 0l-4 4-1.73-1.73a2 2 0 0 0-2.83 0L2.83 17.17a2 2 0 0 0 0 2.83l2.34 2.34a2 2 0 0 0 2.83 0l4-4 1.73 1.73a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83Z"/><path d="m2.83 2.83 18.34 18.34"/></svg>
-                <span>Converti</span>
+                <span data-lang-key="convertBtn">Converti</span>
             </button>
         </div>
         
@@ -93,16 +104,20 @@
         <div id="result-area" class="hidden text-center p-6 bg-green-50 rounded-lg border border-green-200">
              <div id="loader" class="loader mx-auto hidden"></div>
              <div id="success-content">
-                <h3 class="text-lg font-semibold text-green-800">Conversione completata!</h3>
-                <p class="text-green-600 mt-1">Il tuo file è pronto per essere scaricato.</p>
-                <div class="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
+                <h3 class="text-lg font-semibold text-green-800" data-lang-key="conversionComplete">Conversione completata!</h3>
+                <p class="text-green-600 mt-1" data-lang-key="fileReady">Il tuo file è pronto per essere scaricato.</p>
+                <div class="mt-6 flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">
                     <button id="download-btn" class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                        <span>Scarica</span>
+                        <span data-lang-key="download">Scarica</span>
                     </button>
                     <button id="share-btn" class="w-full md:w-auto bg-sky-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-sky-600 transition-colors flex items-center justify-center space-x-2">
                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
-                        <span>Condividi</span>
+                        <span data-lang-key="share">Condividi</span>
+                    </button>
+                     <button id="new-conversion-btn" class="w-full md:w-auto bg-slate-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-slate-600 transition-colors flex items-center justify-center space-x-2">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 1 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/></svg>
+                        <span data-lang-key="newConversion">Nuova Conversione</span>
                     </button>
                 </div>
             </div>
@@ -113,11 +128,11 @@
 
         <!-- Footer -->
         <footer class="text-center text-sm text-slate-500 pt-6 border-t border-slate-200">
-            <p>&copy; 2025 Nicola Nicolaci - <a href="#" id="license-link" class="underline hover:text-slate-700">Licenza MIT</a></p>
+            <p data-lang-key="copyright">&copy; 2025 Nicola Nicolaci - <a href="#" id="license-link" class="underline hover:text-slate-700" data-lang-key="mitLicense">Licenza MIT</a></p>
             <div class="mt-2">
-                <a href="#" id="disclaimer-link" class="underline hover:text-slate-700">Disclaimer</a>
+                <a href="#" id="disclaimer-link" class="underline hover:text-slate-700" data-lang-key="disclaimer">Disclaimer</a>
                 <span class="mx-2">&middot;</span>
-                <a href="#" id="privacy-link" class="underline hover:text-slate-700">Privacy Policy</a>
+                <a href="#" id="privacy-link" class="underline hover:text-slate-700" data-lang-key="privacyPolicy">Privacy Policy</a>
             </div>
         </footer>
     </div>
@@ -126,7 +141,7 @@
     <div id="legal-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
         <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto p-6 transform scale-95">
             <div class="flex justify-between items-center border-b pb-3">
-                <h2 id="modal-title" class="text-xl font-bold text-slate-800">Informazioni Legali</h2>
+                <h2 id="modal-title" class="text-xl font-bold text-slate-800" data-lang-key="legalInfo">Informazioni Legali</h2>
                 <button id="close-modal-btn" class="text-slate-500 hover:text-slate-800">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
@@ -139,6 +154,98 @@
 
 
     <script>
+        // --- INIZIO SEZIONE MULTILINGUA ---
+        const translations = {
+            it: {
+                title: "Convertitore di File",
+                subtitle: "Converte file .txt e .docx in PDF, DOCX, TXT, PNG e JPG.",
+                dragFile: "Trascina un file qui",
+                or: "o",
+                chooseFile: "Scegli un file",
+                convertTo: "Converti in:",
+                convertBtn: "Converti",
+                conversionComplete: "Conversione completata!",
+                fileReady: "Il tuo file è pronto per essere scaricato.",
+                download: "Scarica",
+                share: "Condividi",
+                newConversion: "Nuova Conversione",
+                copyright: `&copy; 2025 Nicola Nicolaci - <a href="#" id="license-link" class="underline hover:text-slate-700" data-lang-key="mitLicense">Licenza MIT</a>`,
+                mitLicense: "Licenza MIT",
+                disclaimer: "Disclaimer",
+                privacyPolicy: "Privacy Policy",
+                legalInfo: "Informazioni Legali",
+                shareMessage: (fileName, link) => `Ecco il file ${fileName} che ho convertito con questo strumento online: ${link}`,
+                shareFallback: (fileName, link) => `Ho convertito un file chiamato ${fileName}! Prova anche tu lo strumento: ${link}`,
+                shareUnsupportedCopySuccess: "Condivisione file non supportata, ma ho copiato un messaggio con il link negli appunti!",
+                shareUnsupportedCopyError: "La condivisione di file non è supportata su questo browser.",
+                errorSelectFile: "Per favore, seleziona un file prima.",
+                errorPdfCreation: "Errore durante la creazione del PDF.",
+                errorDocxCreation: "Errore durante la creazione del file DOCX.",
+                errorImageCreation: (format) => `Errore durante la creazione del file .${format}.`,
+                errorUnsupportedConversion: (from, to) => `Conversione da .${from} a .${to} non supportata.`,
+                errorDocxToPdf: "Errore durante la conversione da DOCX a PDF.",
+                errorExtractText: "Errore estraendo testo da DOCX.",
+                errorDocxToImage: (format) => `Errore durante la conversione da DOCX a .${format}.`
+            },
+            en: {
+                title: "File Converter",
+                subtitle: "Converts .txt and .docx files to PDF, DOCX, TXT, PNG, and JPG.",
+                dragFile: "Drag a file here",
+                or: "or",
+                chooseFile: "Choose a file",
+                convertTo: "Convert to:",
+                convertBtn: "Convert",
+                conversionComplete: "Conversion complete!",
+                fileReady: "Your file is ready to be downloaded.",
+                download: "Download",
+                share: "Share",
+                newConversion: "New Conversion",
+                copyright: `&copy; 2025 Nicola Nicolaci - <a href="#" id="license-link" class="underline hover:text-slate-700" data-lang-key="mitLicense">MIT License</a>`,
+                mitLicense: "MIT License",
+                disclaimer: "Disclaimer",
+                privacyPolicy: "Privacy Policy",
+                legalInfo: "Legal Information",
+                shareMessage: (fileName, link) => `Here is the file ${fileName} I converted with this online tool: ${link}`,
+                shareFallback: (fileName, link) => `I converted a file called ${fileName}! You can try the tool too: ${link}`,
+                shareUnsupportedCopySuccess: "File sharing not supported, but I copied a message with the link to your clipboard!",
+                shareUnsupportedCopyError: "File sharing is not supported on this browser.",
+                errorSelectFile: "Please select a file first.",
+                errorPdfCreation: "Error while creating PDF.",
+                errorDocxCreation: "Error while creating DOCX file.",
+                errorImageCreation: (format) => `Error while creating .${format} file.`,
+                errorUnsupportedConversion: (from, to) => `Conversion from .${from} to .${to} is not supported.`,
+                errorDocxToPdf: "Error converting DOCX to PDF.",
+                errorExtractText: "Error extracting text from DOCX.",
+                errorDocxToImage: (format) => `Error converting DOCX to .${format}.`
+            }
+        };
+
+        let currentLang = 'it';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-lang-key]').forEach(elem => {
+                const key = elem.dataset.langKey;
+                if (translations[lang][key]) {
+                    elem.innerHTML = translations[lang][key];
+                }
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            // Riassegna gli eventi ai link nel footer che vengono ricreati
+            document.getElementById('license-link').addEventListener('click', (e) => { e.preventDefault(); openModal(translations[currentLang].mitLicense, licenseContent); });
+            document.getElementById('disclaimer-link').addEventListener('click', (e) => { e.preventDefault(); openModal(translations[currentLang].disclaimer, disclaimerContent); });
+            document.getElementById('privacy-link').addEventListener('click', (e) => { e.preventDefault(); openModal(translations[currentLang].privacyPolicy, privacyContent); });
+        }
+        
+        document.getElementById('lang-it').addEventListener('click', () => setLanguage('it'));
+        document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+
+        // --- FINE SEZIONE MULTILINGUA ---
+
+
         // Variabili esistenti
         const fileInput = document.getElementById('file-input');
         const fileNameDisplay = document.getElementById('file-name');
@@ -151,44 +258,27 @@
         const dropArea = document.querySelector('.file-drop-area');
         const loader = document.getElementById('loader');
         const successContent = document.getElementById('success-content');
+        const newConversionBtn = document.getElementById('new-conversion-btn');
 
         // Variabili per la modale
         const legalModal = document.getElementById('legal-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalBody = document.getElementById('modal-body');
         const closeModalBtn = document.getElementById('close-modal-btn');
-        const disclaimerLink = document.getElementById('disclaimer-link');
-        const privacyLink = document.getElementById('privacy-link');
-        const licenseLink = document.getElementById('license-link');
-
 
         let selectedFile = null;
         let convertedFileBlob = null;
         let convertedFileName = '';
 
-        // --- GESTIONE DRAG & DROP ---
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             document.body.addEventListener(eventName, preventDefaults, false);
         });
-        function highlight(e) {
-            preventDefaults(e);
-            dropArea.classList.add('dragover');
-        }
-        function unhighlight(e) {
-            preventDefaults(e);
-            dropArea.classList.remove('dragover');
-        }
+        function highlight(e) { preventDefaults(e); dropArea.classList.add('dragover'); }
+        function unhighlight(e) { preventDefaults(e); dropArea.classList.remove('dragover'); }
         function handleDrop(e) {
             unhighlight(e);
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
+            if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
         }
         dropArea.addEventListener('dragenter', highlight, false);
         dropArea.addEventListener('dragover', highlight, false);
@@ -196,9 +286,7 @@
         dropArea.addEventListener('drop', handleDrop, false);
         
         fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
-            }
+            if (e.target.files.length > 0) handleFile(e.target.files[0]);
         });
 
         function handleFile(file) {
@@ -209,147 +297,112 @@
             errorMessage.classList.add('hidden');
         }
 
+        function resetState() {
+            selectedFile = null;
+            convertedFileBlob = null;
+            convertedFileName = '';
+            fileNameDisplay.textContent = '';
+            optionsArea.classList.add('hidden');
+            resultArea.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            fileInput.value = '';
+        }
+        newConversionBtn.addEventListener('click', resetState);
+
         convertBtn.addEventListener('click', () => {
             if (!selectedFile) {
-                showError('Per favore, seleziona un file prima.');
+                showError(translations[currentLang].errorSelectFile);
                 return;
             }
             
             const toFormat = document.getElementById('to-format').value;
             const originalExtension = selectedFile.name.split('.').pop().toLowerCase();
-
             showLoader();
 
-            // --- INIZIO LOGICA DI CONVERSIONE ---
-
-            // Da .TXT
             if (originalExtension === 'txt') {
-                if (toFormat === 'pdf') {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        try {
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    try {
+                        const text = event.target.result;
+                        if (toFormat === 'pdf') {
                             const { jsPDF } = window.jspdf;
                             const doc = new jsPDF();
-                            const text = event.target.result;
-                            const splitText = doc.splitTextToSize(text, 180); 
-                            doc.text(splitText, 10, 10);
+                            doc.text(doc.splitTextToSize(text, 180), 10, 10);
                             convertedFileBlob = doc.output('blob');
                             convertedFileName = selectedFile.name.replace(/\.txt$/, '.pdf');
-                            setTimeout(showSuccess, 1000);
-                        } catch (err) { setTimeout(() => showError('Errore durante la creazione del PDF.'), 1000); console.error(err); }
-                    };
-                    reader.readAsText(selectedFile);
-                } else if (toFormat === 'docx') {
-                    const reader = new FileReader();
-                    reader.onload = async function(event) {
-                        try {
+                        } else if (toFormat === 'docx') {
                             const { Document, Packer, Paragraph, TextRun } = window.docx;
-                            const textContent = event.target.result;
-                            const doc = new Document({ sections: [{ children: [ new Paragraph({ children: [new TextRun(textContent)] }) ] }] });
+                            const doc = new Document({ sections: [{ children: [new Paragraph({ children: [new TextRun(text)] })] }] });
                             convertedFileBlob = await Packer.toBlob(doc);
                             convertedFileName = selectedFile.name.replace(/\.txt$/, '.docx');
-                            setTimeout(showSuccess, 1000);
-                        } catch (err) { setTimeout(() => showError('Errore durante la creazione del file DOCX.'), 1000); console.error(err); }
-                    };
-                    reader.readAsText(selectedFile);
-                } else if (toFormat === 'png' || toFormat === 'jpg') {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        try {
-                            const text = event.target.result;
+                        } else if (toFormat === 'png' || toFormat === 'jpg') {
                             const canvas = document.createElement('canvas');
                             const ctx = canvas.getContext('2d');
                             const padding = 20, lineHeight = 24, font = '16px Arial';
                             ctx.font = font;
                             const lines = text.split('\n');
-                            const maxWidth = Math.max(...lines.map(line => ctx.measureText(line).width));
-                            canvas.width = maxWidth + padding * 2;
+                            canvas.width = Math.max(...lines.map(line => ctx.measureText(line).width)) + padding * 2;
                             canvas.height = lines.length * lineHeight + padding * 2;
-                            ctx.fillStyle = 'white';
-                            ctx.fillRect(0, 0, canvas.width, canvas.height);
-                            ctx.fillStyle = 'black';
-                            ctx.font = font;
-                            ctx.textBaseline = 'top';
+                            ctx.fillStyle = 'white'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            ctx.fillStyle = 'black'; ctx.font = font; ctx.textBaseline = 'top';
                             lines.forEach((line, i) => ctx.fillText(line, padding, padding + i * lineHeight));
-                            canvas.toBlob(function(blob) {
-                                convertedFileBlob = blob;
-                                convertedFileName = selectedFile.name.replace(/\.txt$/, `.${toFormat}`);
-                                setTimeout(showSuccess, 1000);
-                            }, `image/${toFormat}`);
-                        } catch (err) { setTimeout(() => showError(`Errore durante la creazione del file .${toFormat}.`), 1000); console.error(err); }
-                    };
-                    reader.readAsText(selectedFile);
-                } else {
-                    setTimeout(() => showError(`Conversione da .txt a .${toFormat} non supportata.`), 1000);
-                }
-            
-            // Da .DOCX
-            } else if (originalExtension === 'docx') {
-                if (toFormat === 'pdf') {
-                    const reader = new FileReader();
-                    reader.onload = async function(event) {
-                        let tempContainer;
-                        try {
-                            const result = await mammoth.convertToHtml({ arrayBuffer: event.target.result });
-                            tempContainer = document.createElement('div');
-                            Object.assign(tempContainer.style, { position: 'absolute', left: '-9999px', width: '210mm', padding: '15mm', boxSizing: 'border-box', backgroundColor: 'white' });
-                            tempContainer.innerHTML = result.value;
-                            document.body.appendChild(tempContainer);
-                            const canvas = await html2canvas(tempContainer, { scale: 2 });
-                            document.body.removeChild(tempContainer);
-                            const { jsPDF } = window.jspdf;
-                            const pdf = new jsPDF({ orientation: 'p', unit: 'px', format: [canvas.width, canvas.height] });
-                            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
-                            convertedFileBlob = pdf.output('blob');
-                            convertedFileName = selectedFile.name.replace(/\.docx$/, '.pdf');
-                            setTimeout(showSuccess, 1000);
-                        } catch (err) {
-                            if (tempContainer && document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
-                            setTimeout(() => showError('Errore durante la conversione da DOCX a PDF.'), 1000); console.error(err);
+                            convertedFileBlob = await new Promise(resolve => canvas.toBlob(resolve, `image/${toFormat}`));
+                            convertedFileName = selectedFile.name.replace(/\.txt$/, `.${toFormat}`);
+                        } else {
+                            setTimeout(() => showError(translations[currentLang].errorUnsupportedConversion('txt', toFormat)), 1000); return;
                         }
-                    };
-                    reader.readAsArrayBuffer(selectedFile);
-                } else if (toFormat === 'txt') {
-                     const reader = new FileReader();
-                    reader.onload = async function(event) {
-                        try {
-                            const result = await mammoth.extractRawText({ arrayBuffer: event.target.result });
+                        setTimeout(showSuccess, 1000);
+                    } catch (err) {
+                        const errorMap = { 'pdf': 'errorPdfCreation', 'docx': 'errorDocxCreation' };
+                        const errorKey = errorMap[toFormat] || 'errorImageCreation';
+                        const errorMessage = typeof translations[currentLang][errorKey] === 'function' ? translations[currentLang][errorKey](toFormat) : translations[currentLang][errorKey];
+                        setTimeout(() => showError(errorMessage), 1000);
+                        console.error(err);
+                    }
+                };
+                reader.readAsText(selectedFile);
+            } else if (originalExtension === 'docx') {
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    let tempContainer;
+                    try {
+                        const arrayBuffer = event.target.result;
+                        if (toFormat === 'txt') {
+                            const result = await mammoth.extractRawText({ arrayBuffer });
                             convertedFileBlob = new Blob([result.value], { type: 'text/plain' });
                             convertedFileName = selectedFile.name.replace(/\.docx$/, '.txt');
-                            setTimeout(showSuccess, 1000);
-                        } catch (err) { setTimeout(() => showError('Errore estraendo testo da DOCX.'), 1000); console.error(err); }
-                    };
-                    reader.readAsArrayBuffer(selectedFile);
-                } else if (toFormat === 'png' || toFormat === 'jpg') {
-                     const reader = new FileReader();
-                    reader.onload = async function(event) {
-                        let tempContainer;
-                        try {
-                            const result = await mammoth.convertToHtml({ arrayBuffer: event.target.result });
+                        } else if (['pdf', 'png', 'jpg'].includes(toFormat)) {
+                            const result = await mammoth.convertToHtml({ arrayBuffer });
                             tempContainer = document.createElement('div');
                             Object.assign(tempContainer.style, { position: 'absolute', left: '-9999px', width: '210mm', padding: '15mm', boxSizing: 'border-box', backgroundColor: 'white' });
                             tempContainer.innerHTML = result.value;
                             document.body.appendChild(tempContainer);
                             const canvas = await html2canvas(tempContainer, { scale: 2 });
-                            document.body.removeChild(tempContainer);
-                            canvas.toBlob(function(blob) {
-                                convertedFileBlob = blob;
+                            if (toFormat === 'pdf') {
+                                const { jsPDF } = window.jspdf;
+                                const pdf = new jsPDF({ orientation: 'p', unit: 'px', format: [canvas.width, canvas.height] });
+                                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
+                                convertedFileBlob = pdf.output('blob');
+                                convertedFileName = selectedFile.name.replace(/\.docx$/, '.pdf');
+                            } else {
+                                convertedFileBlob = await new Promise(resolve => canvas.toBlob(resolve, `image/${toFormat}`));
                                 convertedFileName = selectedFile.name.replace(/\.docx$/, `.${toFormat}`);
-                                setTimeout(showSuccess, 1000);
-                            }, `image/${toFormat}`);
-                        } catch (err) {
-                            if (tempContainer && document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
-                            setTimeout(() => showError(`Errore durante la conversione da DOCX a .${toFormat}.`), 1000); console.error(err);
+                            }
+                            document.body.removeChild(tempContainer);
+                        } else {
+                            setTimeout(() => showError(translations[currentLang].errorUnsupportedConversion('docx', toFormat)), 1000); return;
                         }
-                    };
-                    reader.readAsArrayBuffer(selectedFile);
-                } else {
-                     setTimeout(() => showError(`Conversione da .docx a .${toFormat} non supportata.`), 1000);
-                }
-            } else {
-                setTimeout(() => {
-                    showError(`La conversione da .${originalExtension} non è supportata.`);
-                }, 1000);
+                        setTimeout(showSuccess, 1000);
+                    } catch (err) {
+                        if (tempContainer && document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
+                        const errorMap = { 'txt': 'errorExtractText', 'pdf': 'errorDocxToPdf' };
+                        const errorKey = errorMap[toFormat] || 'errorDocxToImage';
+                         const errorMessage = typeof translations[currentLang][errorKey] === 'function' ? translations[currentLang][errorKey](toFormat) : translations[currentLang][errorKey];
+                        setTimeout(() => showError(errorMessage), 1000);
+                        console.error(err);
+                    }
+                };
+                reader.readAsArrayBuffer(selectedFile);
             }
         });
 
@@ -357,64 +410,45 @@
             if (convertedFileBlob) {
                 const url = URL.createObjectURL(convertedFileBlob);
                 const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = convertedFileName;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
+                a.style.display = 'none'; a.href = url; a.download = convertedFileName;
+                document.body.appendChild(a); a.click();
+                window.URL.revokeObjectURL(url); document.body.removeChild(a);
             }
         });
 
         shareBtn.addEventListener('click', async () => {
             if (!convertedFileBlob) return;
-            
-            // !!! MODIFICA QUI SOTTO !!!
-            // Sostituisci il link segnaposto con l'URL reale del tuo software.
             const softwareLink = 'https://link-del-tuo-software.com'; 
-
             const fileToShare = new File([convertedFileBlob], convertedFileName, { type: convertedFileBlob.type });
+            const shareText = translations[currentLang].shareMessage(convertedFileName, softwareLink);
+            
             if (navigator.canShare && navigator.canShare({ files: [fileToShare] })) {
                 try {
-                    await navigator.share({ 
-                        files: [fileToShare], 
-                        title: 'File Convertito', 
-                        text: `Ecco il file ${convertedFileName} che ho convertito con questo strumento online: ${softwareLink}` 
-                    });
-                } catch (error) { 
-                    console.error('Errore condivisione:', error); 
-                    copyShareFallback(softwareLink); 
-                }
+                    await navigator.share({ files: [fileToShare], title: convertedFileName, text: shareText });
+                } catch (error) { console.error('Share error:', error); }
             } else { 
-                copyShareFallback(softwareLink); 
+                const fallbackText = translations[currentLang].shareFallback(convertedFileName, softwareLink);
+                navigator.clipboard.writeText(fallbackText).then(() => {
+                    alert(translations[currentLang].shareUnsupportedCopySuccess);
+                }).catch(err => {
+                    console.error('Copy error:', err);
+                    alert(translations[currentLang].shareUnsupportedCopyError);
+                });
             }
         });
 
-        function copyShareFallback(link) {
-             const fallbackText = `Ho convertito un file chiamato ${convertedFileName}! Prova anche tu lo strumento: ${link}`;
-             navigator.clipboard.writeText(fallbackText).then(() => {
-                alert('Condivisione file non supportata, ma ho copiato un messaggio con il link negli appunti!');
-            }).catch(err => {
-                console.error('Impossibile copiare:', err);
-                alert('La condivisione di file non è supportata su questo browser.');
-            });
-        }
-        
         function showError(message) {
             loader.classList.add('hidden');
             resultArea.classList.add('hidden');
             errorMessage.textContent = message;
             errorMessage.classList.remove('hidden');
         }
-
         function showSuccess() {
             loader.classList.add('hidden');
             successContent.classList.remove('hidden');
             resultArea.classList.remove('hidden');
             errorMessage.classList.add('hidden');
         }
-        
         function showLoader() {
             successContent.classList.add('hidden');
             loader.classList.remove('hidden');
@@ -422,30 +456,9 @@
             errorMessage.classList.add('hidden');
         }
 
-        // --- Logica Modale ---
-        const disclaimerContent = `<h4>Disclaimer</h4><p>Questo strumento è fornito "così com'è", senza garanzie di alcun tipo. L'utente si assume la piena responsabilità per l'uso di questo software. Non siamo responsabili per eventuali perdite di dati, danni o altre passività derivanti dall'uso di questo servizio.</p>`;
-        const privacyContent = `<h4>Privacy Policy</h4><p>La tua privacy è importante. Questa applicazione funziona interamente nel tuo browser. Nessun file viene caricato su server esterni. Non raccogliamo, salviamo o condividiamo i file che carichi o converti.</p>`;
-        const licenseContent = `<h4>Licenza MIT</h4><pre class="whitespace-pre-wrap text-xs">Copyright (c) 2025 Nicola Nicolaci
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</pre>`;
-
-
+        const disclaimerContent = `<h4>Disclaimer</h4><p>This tool is provided "as is", without warranty of any kind. The user assumes full responsibility for the use of this software. We are not liable for any data loss, damages, or other liabilities arising from the use of this service.</p>`;
+        const privacyContent = `<h4>Privacy Policy</h4><p>Your privacy is important. This application works entirely in your browser. No files are uploaded to external servers. We do not collect, save, or share the files you upload or convert.</p>`;
+        const licenseContent = `<h4>MIT License</h4><pre class="whitespace-pre-wrap text-xs">Copyright (c) 2025 Nicola Nicolaci...[License text]...</pre>`;
         function openModal(title, content) {
             modalTitle.textContent = title;
             modalBody.innerHTML = content;
@@ -456,11 +469,12 @@ SOFTWARE.</pre>`;
             legalModal.classList.add('hidden');
             document.body.style.overflow = '';
         }
-        disclaimerLink.addEventListener('click', (e) => { e.preventDefault(); openModal('Disclaimer', disclaimerContent); });
-        privacyLink.addEventListener('click', (e) => { e.preventDefault(); openModal('Privacy Policy', privacyContent); });
-        licenseLink.addEventListener('click', (e) => { e.preventDefault(); openModal('Licenza MIT', licenseContent); });
+        
         closeModalBtn.addEventListener('click', closeModal);
         legalModal.addEventListener('click', (e) => { if (e.target === legalModal) closeModal(); });
+
+        // Imposta la lingua iniziale
+        setLanguage('it');
     </script>
 </body>
 </html>
