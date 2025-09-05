@@ -18,7 +18,7 @@ Converti da .txt a PDF, DOCX, PNG, JPG.
 
 Converti da .docx a PDF, TXT, PNG, JPG.
 
-Anteprima e Download: Dopo la conversione, puoi scaricare immediatamente il file o condividerlo.
+Azioni Rapide: Dopo la conversione, puoi scaricare, condividere o avviare una nuova conversione con un solo click.
 
 Design Moderno e Responsivo: L'interfaccia è pulita, vivace e si adatta a schermi di diverse dimensioni.
 
@@ -33,7 +33,7 @@ Scegli il formato: Seleziona il formato di output desiderato dal menu a tendina.
 
 Converti: Clicca sul pulsante "Converti".
 
-Scarica o Condividi: Una volta completata la conversione, usa i pulsanti forniti per scaricare il tuo nuovo file o condividerlo.
+Scarica, Condividi o Riavvia: Una volta completata la conversione, usa i pulsanti forniti per scaricare il tuo nuovo file, condividerlo, o cliccare su "Nuova Conversione" per ricominciare.
 
 Tecnologie Utilizzate
 HTML5
